@@ -12,6 +12,8 @@ use tonic::{Request, Response, Status};
 
 use autovojo_grpc::NodeDescriptor;
 
+use self::autovojo_grpc::Nodes;
+
 //use autovojo_grpc::NodeDescriptor;
 
 // defining a struct for our service
@@ -19,7 +21,7 @@ use autovojo_grpc::NodeDescriptor;
 struct Device  {
     id: String,
     ip_address: Ipv4Addr,
-    udp_port: i32,
+    //udp_port: i32,
     tcp_port: i32
 }
 
@@ -42,13 +44,11 @@ impl AutovojoControlPlane for AutovojoService {
     async fn register_node(&self,request: Request<AutovojoRequest>) -> Result<Response<AutovojoResponse>,Status> {
         let name = request.get_ref().node_name.clone();
         let ip_address= request.get_ref().ip.parse().unwrap();
-        let udp_port= request.get_ref().port;
         let tcp_port= request.get_ref().port;
 
         let device = Device {
             id: name,
             ip_address,
-            udp_port,
             tcp_port
         };
 
@@ -63,11 +63,29 @@ impl AutovojoControlPlane for AutovojoService {
         }))
     }
 
-    async fn remove_node(&self,request: Request<AutovojoRequest>) -> Result<Response<AutovojoResponse>,Status> {
+    async fn remove_node(&self,_request: Request<AutovojoRequest>) -> Result<Response<AutovojoResponse>,Status> {
         todo!()
     }
 
-    async fn list_nodes(&self,request: Request<Empty>) -> Result<Response<AutovojoResponse>,Status> {
-        todo!()
+    async fn list_nodes(&self,_request: Request<Empty>) -> Result<Response<AutovojoResponse>,Status> {
+
+        let devices = self.devices.lock().await;
+
+
+        let nodes = Nodes {
+            nodes: devices.iter().map(|device |
+            NodeDescriptor{
+                node_name: device.id.clone(),
+                node_ip: device.ip_address.to_string(),
+                node_port: device.tcp_port,
+            }
+            ).collect::<Vec<NodeDescriptor>>()
+        };
+
+
+        Ok(Response::new(AutovojoResponse{
+            message: "Devices".into(),
+            nodes: Some(nodes)
+        }))
     }
 }

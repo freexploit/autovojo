@@ -1,0 +1,3 @@
+{
+  "rust-analyzer.linkedProjects": ["Cargo.toml", "autovojo-ebpf/Cargo.toml"]
+}
