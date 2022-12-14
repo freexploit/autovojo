@@ -19,18 +19,22 @@ pandoc-latex-environment:
 
   
 abstract: | 
-    Las Redes donde se despliegan sistemas edge muchas veces no cuentan
+    Las Redes donde se despliegan sistemas  IoT muchas veces no cuentan
     con las mismas condiciones que un datacenter o servicios en la nube,
     por lo cual es dificil tener las mismas configuraciones y usar los mismos
-    metodos que se usan para enrutar trafico que en estas.
+    metodos que se usan para enrutar trafico que en estas. Un ejemplo son `Software Defined Networks`
+    que permiten dinamicamente a los sistemas configurar sus sistemas de enrutamientos. El presente articulo
+    describe las tecnologias disponibles asi como sus posibles aplicaciones en 
+    un caso de uso como el descrito, que ventajas trae el lenguaje de programacion Rust
+    o protocolos como grpc, asi mismo la potencia de nuevas tecnologias integradas al kernel de linux
+    como lo es eBPF.
 ---
 
+## Tecnologias
 
+### eBPF
 
-
-## Ebpf
-
-Ebpf es una maquina virtual que corre en kernel de linux que permite ejecutar aplicaciones 
+eBPF es una maquina virtual que corre en kernel de linux que permite ejecutar aplicaciones 
 a nivel del espacio de kernel haciendo que sean muy eficientes y rapida[@8850758]
 
 
@@ -38,11 +42,21 @@ a nivel del espacio de kernel haciendo que sean muy eficientes y rapida[@8850758
 Lorem ipsum dolor ...
 :::
 
-## Rust
+### Rust
 
-Lenguaje de programacion de bajo nivel que permite crear sistemas de bajo nivel y eficiente.
+Lenguaje de programación de alto nivel que permite desarrollar aplicaciones que aprovechan al máximo el hardware
+al ser capaz de acceder a los elementos que este provee similar a lenguajes como `C` o `C++` así como 
 
-## Grpc
+### gRPC
+
+
+## Arquitectura de Red 
+
+
+## Arquitectura de Software
+
+
+## Conclusiones
 
 Es un protocol binario para crear sistemas remotos 
 

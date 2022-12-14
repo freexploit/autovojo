@@ -1,6 +1,7 @@
 pub mod server;
 
 use std::net::{SocketAddr, self};
+use std::sync::Arc;
 use autovojo_common::PacketLog;
 use aya::maps::perf::AsyncPerfEventArray;
 use aya::{include_bytes_aligned, Bpf};
@@ -9,9 +10,9 @@ use aya::programs::{Xdp, XdpFlags};
 use aya::util::online_cpus;
 use aya_log::BpfLogger;
 use log::{info, warn};
+use tokio::sync::Mutex;
 use tokio::{signal, task};
 use bytes::BytesMut;
-use macaddr::MacAddr6;
 
 //use std::path::Path;
 use anyhow::Result;
@@ -67,11 +68,14 @@ async fn main() -> Result<()> {
     program.attach(&args.iface, XdpFlags::default())
         .context("failed to attach the XDP program with default flags - try changing XdpFlags::default() to XdpFlags::SKB_MODE")?;
 
+    let arc_bpf = Arc::new(Mutex::new(bpf));
+    let perf = arc_bpf.clone();
 
     task::spawn(async move {
+
         let addr: SocketAddr = format!("{}:{}",args.bind_address, args.port).parse().unwrap();
         info!("listening into:{}", addr.to_string());
-        let autovojo_service = AutovojoService::new();
+        let autovojo_service = AutovojoService::new(arc_bpf);
 
         Server::builder()
             .add_service(AutovojoControlPlaneServer::new(autovojo_service))
@@ -79,7 +83,7 @@ async fn main() -> Result<()> {
         .await.unwrap();
     });
 
-    let mut perf_array = AsyncPerfEventArray::try_from(bpf.map_mut("EVENTS")?)?;
+    let mut perf_array = AsyncPerfEventArray::try_from(perf.lock().await.map_mut("EVENTS")?)?;
 
 
     for cpu_id in online_cpus()? {
@@ -87,33 +91,23 @@ async fn main() -> Result<()> {
 
         let mut buf = perf_array.open(cpu_id, None)?;
 
-        // 
-
-
         task::spawn(async move {
-            // 
-
-
             let mut buffers = (0..10)
                 .map(|_| BytesMut::with_capacity(1024))
                 .collect::<Vec<_>>();
-
             loop {
-                // 
-
-
                 let events = buf.read_events(&mut buffers).await.unwrap();
                 for i in 0..events.read {
                     let buf = &mut buffers[i];
                     let ptr = buf.as_ptr() as *const PacketLog;
                     // 
 
-
                     let data = unsafe { ptr.read_unaligned() };
                     let src_addr = net::Ipv4Addr::from(data.ipv4_address);
-                    let mac_addr = MacAddr6::from(data.mac_address);
+                    let src_port = data.src_port;
+                    let dst_port = data.dst_port;
+                    info!("LOG: SRC {}, ACTION {}, SRC PORT {}, DST PORT {}", src_addr, data.action, src_port, dst_port);
 
-                    info!("LOG: SRC {}, ACTION {}, MAC: {}", src_addr, data.action, mac_addr);
                 }
             }
         });

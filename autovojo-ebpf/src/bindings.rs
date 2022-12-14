@@ -145,3 +145,11 @@ impl iphdr {
         __bindgen_bitfield_unit
     }
 }
+#[repr(C)]
+#[derive(Copy, Clone)]
+pub struct udphdr {
+    pub source: __be16,
+    pub dest: __be16,
+    pub len: __be16,
+    pub check: __sum16,
+}

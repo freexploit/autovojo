@@ -1,0 +1,12 @@
+alias b := build
+alias w := watch
+alias o := open
+
+build:
+    pandoc  index.md -t pdf -o networking.pdf --template eisvogel  -V lang=es-CR --citeproc --toc  --filter pandoc-latex-environment --listings 
+
+open:
+    nohup zathura networking.pdf &> /dev/null & 
+
+watch: 
+    watchexec -e md -c -N  -- just b
