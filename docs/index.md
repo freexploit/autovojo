@@ -80,6 +80,8 @@ En general, gRPC es una tecnología poderosa y eficiente para construir sistemas
 
 ## Conclusiones
 
-Es un protocol binario para crear sistemas remotos 
+Entre los principales retos encontrados a la hora de poner en práctica esta solución es la poca documentación existente, específicamente para la librería aya-rs. Afortunadamente, es un problema que los desarrolladores creadores del código fuente estás activamente trabajando para solucionar. 
+Por otro lado, queremos recalcar la utilidad del marco gRPC. Que nos permite realizar Interfaces de Programación para Aplicaciones (APIs) de forma rápida, con una implementación sencilla y sin demasiados problemas. 
+Por último, eBPF abre la posibilidad de tener mejoras en el rendimiento de la red de los sistemas, y así evitar cuellos de botella al ejecutarse en el kernel. Sin embargo, su implementación es un poco más compleja que otras en el sistema operativos Linux, como netfilter por ejemplo. 
 
 ## Bibliografía
