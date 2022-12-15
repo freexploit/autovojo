@@ -1,0 +1,63 @@
+@startuml
+nwdiag {
+  
+
+  internet [shape = cloud];
+  internet -- public_proxy;
+
+  network IOT3 {
+    address = "172.1.0.0/24"
+    color = "blue"
+
+    edge_router3 [address=".2", shape ="server"]
+
+    group sensors3 {
+      gas_sensor3 [address=".3", shape="node"]
+      light_sensors3 [address=".4", shape="node"]
+      noise_sensors3 [address=".5", shape="node"]
+    }
+  }
+  network IOT2 {
+    address = "172.2.0.0/24"
+    color = "blue"
+
+    edge_router2 [address=".2", shape ="server"]
+
+    group sensors2 {
+      gas_sensor2 [address=".3", shape="node"]
+      light_sensors2 [address=".4", shape="node"]
+      noise_sensors2 [address=".5", shape="node"]
+    }
+  }
+
+  network IOT1 {
+    address = "172.1.0.0/24"
+    color = "blue"
+
+    edge_router1 [address=".2", shape ="server"]
+
+    group sensors {
+      gas_sensor [address=".3", shape="node"]
+      light_sensors [address=".4", shape="node"]
+      noise_sensors [address=".5", shape="node"]
+    }
+  }
+
+  network vpn {
+    address = "10.140.0.0/20"
+    color = "red"
+    edge_router1 [address=".2", shape ="server"]
+    edge_router2 [address=".3", shape ="server"]
+    edge_router3 [address=".4", shape ="server"]
+    autovojo_server [address="11", shape="router"]
+  }
+
+  network public_cloud {
+    address = "10.130.0.0/16"
+    color = "green"
+    autovojo_server [address="10", shape="router"]
+    public_proxy [address="12", shape="server"]
+  }
+
+}
+@enduml

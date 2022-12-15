@@ -1,0 +1,32 @@
+@startuml
+
+class Node {
+  -id: int
+  -ipAddress: string
+  -status: string
+  +register(): void
+  +deregister(): void
+}
+
+class NodeRegistry {
+  -nodes: Node[]
+  +addNode(node: Node): void
+  +removeNode(node: Node): void
+  +getNode(id: int): Node
+  +getNodes(): Node[]
+}
+
+Client -> NodeRegistry: register()
+NodeRegistry -> Node: addNode()
+
+Client -> NodeRegistry: deregister()
+NodeRegistry -> Node: removeNode()
+
+Client -> NodeRegistry: getNode()
+NodeRegistry -> Node: getNode()
+
+Client -> NodeRegistry: getNodes()
+NodeRegistry -> Node: getNodes()
+
+@enduml
+

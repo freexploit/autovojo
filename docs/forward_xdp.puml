@@ -1,0 +1,17 @@
+@startuml
+
+class XDPRule {
+  - listenerNode: Node
+  - targetNode: Node
+
+  + listen()
+  + forwardData(data: byte[])
+}
+
+class Node {
+  + send(data: byte[]): int
+  + receive(buffer: byte[]): int
+}
+XDPRule --> Node: uses
+
+@enduml

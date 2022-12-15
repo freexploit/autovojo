@@ -1,0 +1,15 @@
+@startuml
+
+actor EdgeDevice as EdgeDevice
+entity AutovojoRouter as AutovojoRouter
+actor Cliente as Client
+
+EdgeDevice -> AutovojoRouter: Registrar nodo
+AutovojoRouter --> EdgeDevice: Respuesta "nodo registrado"
+AutovojoRouter -> AutovojoRouter: Publicar Servicios del \nnodo registrado
+Client -> AutovojoRouter: Peticion a Servicio
+AutovojoRouter -> EdgeDevice: Peticion a Servicio Redireccionada 
+EdgeDevice --> AutovojoRouter: Respuesta a peticion a servicio
+AutovojoRouter --> Client: Respuesta a peticion a servicio redireccionada
+
+@enduml
