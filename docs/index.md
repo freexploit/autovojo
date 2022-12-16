@@ -75,7 +75,16 @@ En general, `gRPC` es una tecnología poderosa y eficiente para construir sistem
 
 # Autovojo
 
-`Autovojo` es un sistema que busca aprovechar las capacidades del núcleo de Linux para procesar paquetes antes que sean llevados a el espacio de usuario usando la maquina virtual `eBPF`. Para ello se uso el lenguaje de programación `Rust` tanto para crear el código que se ejecutara en la maquina virtual, como el codigo que se ejecuta en el espacio de usuario para configurar y validar las entradas de usuario. La arquitectura es de cliente servidor donde el servidor es un servicio `gRPC` que registra los servicios de los nodos que se registran para luego crear usar un puerto en el servidor para direccionar a este nodo. Básicamente esto hace que la maquina  funcione como un router sencillo, que es configurado por los dispositivos que se registran como nodos en el sistema. Esto permite que un ambiente sea auto configurable al reportar que servicios hay disponibles y luego publicarlos a una red publica o clientes que se encuentran fuera del firewall. 
+`Autovojo` es un sistema que busca aprovechar las capacidades del núcleo de Linux para procesar paquetes antes que sean llevados a el espacio de usuario usando la maquina virtual `eBPF`. Para ello se uso el lenguaje de programación `Rust` tanto para crear el código que se ejecutara en la maquina virtual, como el codigo que se ejecuta en el espacio de usuario para configurar y validar las entradas de usuario. La arquitectura es de cliente servidor donde el servidor es un servicio `gRPC` que registra los servicios de los nodos que se registran para luego crear usar un puerto en el servidor para direccionar a este nodo. 
+
+::: note
+El codigo de autovojo puede encontrarlo en el repositorio [\faGithub freexploit/autovojo](https://github.com/freexploit/autovojo)
+:::
+
+Básicamente esto hace que la maquina  funcione como un router sencillo, que es configurado por los dispositivos que se registran como nodos en el sistema. Esto permite que un ambiente sea auto configurable al reportar que servicios hay disponibles y luego publicarlos a una red publica o clientes que se encuentran fuera del firewall. 
+
+
+
 
 
 ![Diagrama de secuencia](grpc_flow.png)
